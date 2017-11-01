@@ -21,7 +21,7 @@ The repository is designed for the following hardware (links to amazon):
 ## Raspberry PI 3 (alternative)
 
 ### Required Hardware
-- [Raspberry PI 3](https://www.amazon.de/exec/obidos/ASIN/B07231SHZB/wwwgeschenke-inspiration-21)
+- [Raspberry PI 3](https://www.amazon.de/exec/obidos/ASIN/B01CD5VC92/wwwgeschenke-inspiration-21)
 - [PI 3 Case](https://www.amazon.de/exec/obidos/ASIN/B00MQLB1N6/wwwgeschenke-inspiration-21)
 
 
