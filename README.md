@@ -3,20 +3,32 @@ This repository contains scripts, tools and documentation for creating a bluetoo
 
 # Hardware
 
-The repository is designed for the following hardware:
+The repository is designed for the following hardware (links to amazon):
 
-Raspberry PI Zero W: https://www.amazon.de/exec/obidos/ASIN/B07231SHZB/wwwgeschenke-inspiration-21
-Phat DAC: https://www.amazon.de/exec/obidos/ASIN/B019U9VC9E/wwwgeschenke-inspiration-21
-Case: https://www.amazon.de/exec/obidos/ASIN/B01FHDXNNU/wwwgeschenke-inspiration-21
-Adafruit 12-Key Capacitive Touch Sensor: https://www.amazon.de/exec/obidos/ASIN/B00SK8PVNA/wwwgeschenke-inspiration-21
-Lochraster: https://www.amazon.de/exec/obidos/ASIN/B076N6M6RB/wwwgeschenke-inspiration-21
+## Raspberry PI Zero W
 
-Other interesting hardware:
-Pi Cap: https://www.amazon.de/exec/obidos/ASIN/B06XWCC18F/wwwgeschenke-inspiration-21
-Electric Paint: https://www.amazon.de/exec/obidos/ASIN/B00CSMDT8S/wwwgeschenke-inspiration-21
-touch screen: todo
+### Required Hardware
+- [Raspberry PI Zero W](https://www.amazon.de/exec/obidos/ASIN/B07231SHZB/wwwgeschenke-inspiration-21)
+- [Pimoroni Phat DAC](https://www.amazon.de/exec/obidos/ASIN/B019U9VC9E/wwwgeschenke-inspiration-21)
+- [PI Zero Case](https://www.amazon.de/exec/obidos/ASIN/B01FHDXNNU/wwwgeschenke-inspiration-21)
 
-Nevertheless, most of the code and documentation should work with other raspberry pi based systems.
+### Optional Hardware
+- [Capacitive Touch Sensor](https://www.amazon.de/exec/obidos/ASIN/B00SK8PVNA/wwwgeschenke-inspiration-21)
+- [Breadboard 70x30mm](https://www.amazon.de/exec/obidos/ASIN/B076N6M6RB/wwwgeschenke-inspiration-21)
+
+
+## Raspberry PI 3 (alternative)
+
+### Required Hardware
+- [Raspberry PI 3](https://www.amazon.de/exec/obidos/ASIN/B07231SHZB/wwwgeschenke-inspiration-21)
+- [PI 3 Case](https://www.amazon.de/exec/obidos/ASIN/B00MQLB1N6/wwwgeschenke-inspiration-21)
+
+
+## Other interesting stuff
+- [Pi Cap](https://www.amazon.de/exec/obidos/ASIN/B06XWCC18F/wwwgeschenke-inspiration-21)
+- [Electric Paint](https://www.amazon.de/exec/obidos/ASIN/B00CSMDT8S/wwwgeschenke-inspiration-21)
+- [Touch screen](https://www.amazon.de/exec/obidos/ASIN/B06X191RX7/wwwgeschenke-inspiration-21)
+
 
 ## Features
 
@@ -104,7 +116,16 @@ speaker-test -c2 --test=wav -w /usr/share/sounds/alsa/Front_Center.wav
 
 You should hear a voice saying "Front - Center". Press CTRL+C to quit the test.
 
-## The bluetooth audio thing
+## Preparation
+
+```
+apt install -y git
+cd /home/pi
+git clone https://github.com/sandreas/raspberry-bluetooth-receiver
+```
+
+
+## Bluetooth audio
 
 Bluetooth on Linux is tricky - especially when using audio. So, before you begin, you should know some things about the raspberry pi, bluetooth and audio:
 
@@ -229,6 +250,7 @@ Before you add a udev rule, there is an issue, you should know about. On current
 
 ```
 # /etc/rc.local - bottom
+# added
 service udev restart
 exit 0 # this line should already exist
 ```
@@ -237,9 +259,20 @@ Now add a rule that runs a script everytime a bluetooth device gets connected
 ```
 # /etc/udev/rules.d/99-com.rules
 SUBSYSTEM=="input", GROUP="input", MODE="0660"
-KERNEL=="input[0-9]*", RUN+="/usr/local/bin/udev-bluetooth" #added
+#added
+KERNEL=="input[0-9]*", RUN+="/home/pi/raspberry-bluetooth-receiver/scripts/udev-bluetooth"
 
 SUBSYSTEM=="i2c-dev", GROUP="i2c", MODE="0660"
+```
+
+
+# to connect last device on startup, add a reboot cronjob as root
+```
+sudo -s
+crontab -e
+
+#added
+@reboot /home/pi/raspberry-bluetooth-receiver/scripts/autoconnect-bluetooth > /home/pi/raspberry-bluetooth-receiver/logs/autoconnect-bluetooth.log 2>&1 &
 ```
 
 

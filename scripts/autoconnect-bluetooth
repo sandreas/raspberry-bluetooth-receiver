@@ -20,7 +20,7 @@ info
 EOT
 	grep "Connected: yes" "$paired_devices_file" > /dev/null 2>&1
 	if [ "$?" -eq "0" ]; then
-		ACTION="add" NAME="$LAST_DEVICE" ./udev-bluetooth >> /tmp/autoconnect-bluetooth.log
+		ACTION="add" NAME="$LAST_DEVICE" $(dirname $0)/udev-bluetooth >> /tmp/autoconnect-bluetooth.log
 		logger "$LOGINF device $LAST_DEVICE connected"	
 		DEVICE_CONNECTED=1
 		break
@@ -30,8 +30,8 @@ EOT
 connect $LAST_DEVICE
 EOT
 	sleep 1 
-done
+done;
 
-if [ "$DEVICE_CONNECTED" == "0" ]; then
+if [ "$DEVICE_CONNECTED" -ne "0" ]; then
 	logger "$LOGINF device $LAST_DEVICE did not connect"
 fi
