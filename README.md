@@ -8,7 +8,7 @@ The repository is designed for the following hardware (links to amazon):
 ## Raspberry PI Zero W
 
 ### Required Hardware
-- [Raspberry PI Zero W](https://www.amazon.de/exec/obidos/ASIN/B07231SHZB/wwwgeschenke-inspiration-21)
+- [Raspberry PI Zero W](https://www.amazon.de/exec/obidos/ASIN/B07231SHZB/wwwgeschenke-inspiration-21){:target="_blank"}
 - [Pimoroni Phat DAC](https://www.amazon.de/exec/obidos/ASIN/B019U9VC9E/wwwgeschenke-inspiration-21)
 - [PI Zero Case](https://www.amazon.de/exec/obidos/ASIN/B01FHDXNNU/wwwgeschenke-inspiration-21)
 
