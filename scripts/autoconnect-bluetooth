@@ -1,0 +1,37 @@
+#!/bin/sh
+last_device_file="/home/pi/raspberry-bluetooth-receiver/data/last-connected-device"
+paired_devices_file="/tmp/bluetooth-paired-devices"
+
+LOGINF="[$(basename $0)]"
+
+if [ ! -f "$last_device_file" ]; then
+	logger "$LOGINF $last_device_file not found - skipping autoconnect"
+	exit 0;
+fi
+
+LAST_DEVICE=$(/bin/cat "$last_device_file")
+LAST_DEVICE="${LAST_DEVICE%\"}"
+LAST_DEVICE="${LAST_DEVICE#\"}"
+DEVICE_CONNECTED=0
+for i in `seq 1 10`;	
+do
+	/usr/bin/bluetoothctl > "$paired_devices_file" 2>&1 << EOT
+info 
+EOT
+	grep "Connected: yes" "$paired_devices_file" > /dev/null 2>&1
+	if [ "$?" -eq "0" ]; then
+		ACTION="add" NAME="$LAST_DEVICE" ./udev-bluetooth >> /tmp/autoconnect-bluetooth.log
+		logger "$LOGINF device $LAST_DEVICE connected"	
+		DEVICE_CONNECTED=1
+		break
+	fi
+
+	/usr/bin/bluetoothctl > /dev/null 2>&1 << EOT
+connect $LAST_DEVICE
+EOT
+	sleep 1 
+done
+
+if [ "$DEVICE_CONNECTED" == "0" ]; then
+	logger "$LOGINF device $LAST_DEVICE did not connect"
+fi
